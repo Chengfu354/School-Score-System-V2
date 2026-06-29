@@ -57,7 +57,7 @@ const API = {
         if (Array.isArray(data) && data.length > 0) {
             localStorage.setItem(STORAGE.SUBJECTS, JSON.stringify(data));
             const activeIds = data.filter(s => s && s.active !== false).map(s => s.id);
-            if (activeIds.length > 0 && !localStorage.getItem(STORAGE.ACTIVE_SUBJECTS)) {
+            if (activeIds.length > 0) {
                 localStorage.setItem(STORAGE.ACTIVE_SUBJECTS, JSON.stringify(activeIds));
             }
         }
