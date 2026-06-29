@@ -158,6 +158,10 @@ function bindSettingsEvents() {
                 return;
             }
 
+            const origText = saveBtn.innerHTML;
+            saveBtn.innerHTML = "កំពុងរក្សាទុក និងទាញយកទិន្នន័យពី Google Sheet... ⏳";
+            saveBtn.disabled = true;
+
             ConfigManager.save(googleUrl, sheetId, pin);
 
             localStorage.setItem(STORAGE.TG_BOT_TOKEN, botToken);
@@ -165,6 +169,16 @@ function bindSettingsEvents() {
 
             SESSION.tgBotToken = botToken;
             SESSION.tgChatId = chatId;
+
+            // Immediately pull subjects & students from Google Sheet
+            if (window.API) {
+                try {
+                    await window.API.getSubjects(true);
+                    await window.API.getStudents(true);
+                } catch (e) {
+                    console.warn("Error fetching data on save settings:", e);
+                }
+            }
 
             // Sync Active Subjects to backend API
             const activeIds = JSON.parse(localStorage.getItem(STORAGE.ACTIVE_SUBJECTS) || "[]");
@@ -176,8 +190,11 @@ function bindSettingsEvents() {
                 }
             }
 
+            saveBtn.innerHTML = origText;
+            saveBtn.disabled = false;
+
             triggerHaptic("success");
-            alert("✅ ការកំណត់ត្រូវបានរក្សាទុកដោយជោគជ័យ!");
+            alert("✅ ការកំណត់ត្រូវបានរក្សាទុក និងទាញយកទិន្នន័យពី Google Sheet រួចរាល់!");
         });
     }
 

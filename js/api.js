@@ -13,14 +13,19 @@ const API = {
         }
         
         let url = ConfigManager.getApiUrl();
+        const sheetId = ConfigManager.getSpreadsheetId();
+
         if (method === "GET") {
-            url += `?action=${action}&t=${Date.now()}`;
+            const connector = url.includes("?") ? "&" : "?";
+            url += `${connector}action=${action}&sheetId=${encodeURIComponent(sheetId)}&t=${Date.now()}`;
         }
         
         try {
             const options = { method };
-            if (payload && method === "POST") {
-                options.body = JSON.stringify(payload);
+            if (method === "POST") {
+                const postPayload = payload || {};
+                if (!postPayload.sheetId) postPayload.sheetId = sheetId;
+                options.body = JSON.stringify(postPayload);
                 options.headers = { "Content-Type": "text/plain;charset=utf-8" };
             }
             
@@ -73,6 +78,7 @@ const API = {
     async saveScore(studentId, subjectId, score, oldScore, studentName, subjectName) {
         const payload = {
             action: "saveScore",
+            sheetId: ConfigManager.getSpreadsheetId(),
             studentId:   studentId,
             subjectId:   subjectId,
             score:       score,
@@ -109,6 +115,7 @@ const API = {
 
         const payload = {
             action: "saveActiveSubjects",
+            sheetId: ConfigManager.getSpreadsheetId(),
             activeIds: activeIds,
             telegramUser: SESSION.tgUser ? (SESSION.tgUser.first_name || "Unknown") : "Unknown"
         };
