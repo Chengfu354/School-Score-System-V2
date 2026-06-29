@@ -21,6 +21,7 @@ const API = {
             const options = { method };
             if (payload && method === "POST") {
                 options.body = JSON.stringify(payload);
+                options.headers = { "Content-Type": "text/plain;charset=utf-8" };
             }
             
             const res = await fetch(url, options);
@@ -87,11 +88,12 @@ const API = {
             // Fire-and-forget for optimistic UI — save happens in background
             fetch(ConfigManager.getApiUrl(), {
                 method: "POST",
+                headers: { "Content-Type": "text/plain;charset=utf-8" },
                 body: JSON.stringify(payload)
             }).then(async (res) => {
                 const data = await res.json();
                 if (data.result === "error") {
-                    this.showError("Save Failed", "បរាជ័យក្នុងការរក្សាទុកពិន្ទុ។");
+                    console.warn("Background score save reported error:", data.message);
                 }
             }).catch(e => {
                 console.error("Save score background error:", e);
@@ -101,20 +103,20 @@ const API = {
         }
     },
 
-
     async saveActiveSubjects(activeIds) {
+        // Save locally first for instant performance and offline reliability
+        localStorage.setItem(STORAGE.ACTIVE_SUBJECTS, JSON.stringify(activeIds));
+
         const payload = {
             action: "saveActiveSubjects",
             activeIds: activeIds,
-            telegramUser: SESSION.tgUser || "Unknown"
+            telegramUser: SESSION.tgUser ? (SESSION.tgUser.first_name || "Unknown") : "Unknown"
         };
         try {
-            await this.request("saveActiveSubjects", "POST", payload);
-            localStorage.setItem(STORAGE.ACTIVE_SUBJECTS, JSON.stringify(activeIds));
+            // Sync to Google Sheets in background silently
+            await this.request("saveActiveSubjects", "POST", payload, true);
         } catch (e) {
-            console.error("API Error: saveActiveSubjects", e);
-            this.showError("Save Failed", "មិនអាចរក្សាទុកការកំណត់មុខវិជ្ជាបានទេ។");
-            throw e;
+            console.warn("API saveActiveSubjects cloud sync fallback to local:", e);
         }
     },
     
