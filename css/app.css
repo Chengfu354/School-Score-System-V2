@@ -1,0 +1,184 @@
+/* ===================================
+   School Score System v2
+   app.css - Core Design System & Google Fonts
+   =================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Kantumruy+Pro:wght@300;400;500;600;700&family=Noto+Sans+Khmer:wght@400;500;600;700&display=swap');
+
+:root {
+    --bg-color: #f8fafc;
+    --card-bg: #ffffff;
+    --text-color: #0f172a;
+    --subtext-color: #64748b;
+    --primary-color: #2563eb;
+    --primary-hover: #1d4ed8;
+    --primary-light: #eff6ff;
+    --accent-color: #8b5cf6;
+    --button-text-color: #ffffff;
+    --border-color: #e2e8f0;
+    --success-color: #10b981;
+    --warning-color: #f59e0b;
+    --danger-color: #ef4444;
+    --card-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.05), 0 8px 10px -6px rgba(15, 23, 42, 0.04);
+    --radius-lg: 20px;
+    --radius-md: 14px;
+    --radius-sm: 10px;
+}
+
+/* Dark mode overrides (Telegram theme sync compatible) */
+body.dark-theme {
+    --bg-color: #0f172a;
+    --card-bg: #1e293b;
+    --text-color: #f8fafc;
+    --subtext-color: #94a3b8;
+    --primary-color: #3b82f6;
+    --primary-hover: #60a5fa;
+    --primary-light: #1e3a8a;
+    --border-color: #334155;
+    --card-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+    user-select: none;
+}
+
+input, textarea, [contenteditable="true"] {
+    user-select: text;
+}
+
+html, body {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    font-family: 'Kantumruy Pro', 'Noto Sans Khmer', sans-serif;
+    background: var(--bg-color);
+    color: var(--text-color);
+    transition: background 0.25s ease, color 0.25s ease;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+}
+
+/* Page Lifecycle */
+.page {
+    display: none;
+    width: 100%;
+    height: 100%;
+    flex-direction: column;
+    animation: fadeIn 0.2s ease-out;
+}
+
+.page.active {
+    display: flex;
+}
+
+.hidden {
+    display: none !important;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(4px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Top Navigation Header */
+.topbar {
+    height: 60px;
+    min-height: 60px;
+    background: linear-gradient(135deg, #1e40af 0%, #2563eb 50%, #3b82f6 100%);
+    color: var(--button-text-color);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 16px;
+    font-size: 18px;
+    font-weight: 700;
+    box-shadow: 0 4px 20px rgba(37, 99, 235, 0.2);
+    z-index: 10;
+}
+
+.topbar-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 18px;
+    font-weight: 700;
+}
+
+.topbar-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.topbar-btn {
+    background: rgba(255, 255, 255, 0.15);
+    border: none;
+    border-radius: 10px;
+    padding: 8px 12px;
+    color: #fff;
+    font-size: 13px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+}
+
+.topbar-btn:active {
+    background: rgba(255, 255, 255, 0.3);
+}
+
+/* Scrollable Content Container */
+.content {
+    flex: 1;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    padding: 16px;
+    padding-bottom: 90px;
+}
+
+/* Typography utilities */
+.khmer-text {
+    font-family: 'Kantumruy Pro', 'Noto Sans Khmer', sans-serif;
+}
+
+.text-title { font-size: 18px; font-weight: 700; line-height: 1.3; }
+.text-subtitle { font-size: 13px; font-weight: 400; color: var(--subtext-color); line-height: 1.4; }
+.text-normal { font-size: 14px; font-weight: 500; line-height: 1.5; }
+.text-sm { font-size: 12px; font-weight: 400; line-height: 1.4; }
+
+.text-center { text-align: center; }
+.text-right { text-align: right; }
+.text-muted { color: var(--subtext-color); }
+.text-bold { font-weight: 700; }
+
+.lucide {
+    stroke-width: 2px;
+    vertical-align: middle;
+}
+
+/* Spreadsheet Table Styles */
+.spreadsheet-table th, .spreadsheet-table td {
+    padding: 8px;
+    border: 1px solid var(--border-color);
+}
+
+.spreadsheet-table th {
+    background: var(--card-bg);
+    font-weight: 700;
+    color: var(--subtext-color);
+    text-align: center;
+}
+
+.spreadsheet-table td {
+    background: var(--card-bg);
+}

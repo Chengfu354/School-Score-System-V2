@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="km">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>School Score System - Telegram Mini App</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Kantumruy+Pro:wght@300;400;500;600;700&family=Noto+Sans+Khmer:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <!-- Lucide Icons Library CDN -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <!-- Telegram WebApp SDK -->
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="css/app.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/modes.css">
+</head>
+
+<body>
+
+    <!-- GLOBAL ERROR OVERLAY -->
+    <div id="global-error-overlay" class="hidden"
+        style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 9999; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; color: white;">
+        <div style="font-size: 50px; margin-bottom: 20px;">⚠️</div>
+        <h2 id="global-error-title" style="margin-bottom: 10px;">Error</h2>
+        <p id="global-error-msg" class="khmer-text" style="padding: 0 20px;"></p>
+        <div style="display: flex; gap: 12px; margin-top: 20px;">
+            <button onclick="location.reload()"
+                style="padding: 10px 20px; background: var(--primary-color); border: none; border-radius: 8px; color: white; font-weight: bold; font-family: inherit;">🔄 Retry</button>
+            <button onclick="document.getElementById('global-error-overlay').classList.add('hidden')"
+                style="padding: 10px 20px; background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.3); border-radius: 8px; color: white; font-weight: bold; font-family: inherit;">✖ បិទ</button>
+        </div>
+    </div>
+
+
+    <!-- STARTUP LOADING PAGE -->
+    <section id="startup-page" class="page"
+        style="display: flex; flex-direction: column; justify-content: center; align-items: center;">
+        <div class="loader"
+            style="border: 4px solid var(--border-color); border-top: 4px solid var(--primary-color); border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite;">
+        </div>
+        <p class="khmer-text" style="margin-top: 20px; color: var(--subtext-color);">កំពុងដំណើរការកម្មវិធី...</p>
+        <style>
+            @keyframes spin {
+                0% {
+                    transform: rotate(0deg);
+                }
+
+                100% {
+                    transform: rotate(360deg);
+                }
+            }
+        </style>
+    </section>
+
+    <!-- CONFIGURATION SCREEN -->
+    <section id="config-page" class="page hidden"></section>
+
+    <!-- SCREEN 1: PIN LOGIN -->
+    <section id="pin-login-page" class="page hidden"></section>
+
+    <!-- SCREEN 2: SELECT MONTH (Removed in V2) -->
+
+    <!-- SCREEN 3: SELECT ACTIVE SUBJECTS -->
+    <section id="select-subject-page" class="page hidden"></section>
+
+    <!-- SCREEN 4: DASHBOARD -->
+    <section id="dashboard-page" class="page hidden"></section>
+
+    <!-- SCREEN 5: TURBO MODE -->
+    <section id="turbo-mode-page" class="page hidden"></section>
+
+    <!-- SCREEN 7: NORMAL MODE -->
+    <section id="normal-mode-page" class="page hidden"></section>
+
+    <!-- SCREEN 8: RESULTS -->
+    <section id="results-page" class="page hidden"></section>
+
+    <!-- SCREEN 9: EXPORT WORKFLOW -->
+    <section id="export-page" class="page hidden"></section>
+
+    <!-- SCREEN 10: SETTINGS -->
+    <section id="settings-page" class="page hidden"></section>
+
+    <!-- FIXED BOTTOM NAVIGATION BAR -->
+    <nav id="bottom-nav" class="hidden">
+        <button id="nav-home">
+            <i data-lucide="home"></i>
+            <span>ទំព័រដើម</span>
+        </button>
+        <button id="nav-score">
+            <i data-lucide="edit-3"></i>
+            <span>បញ្ចូលពិន្ទុ</span>
+        </button>
+        <button id="nav-result">
+            <i data-lucide="award"></i>
+            <span>លទ្ធផល</span>
+        </button>
+        <button id="nav-export">
+            <i data-lucide="download"></i>
+            <span>ទាញយក</span>
+        </button>
+        <button id="nav-settings">
+            <i data-lucide="settings"></i>
+            <span>ការកំណត់</span>
+        </button>
+    </nav>
+
+    <!-- JAVASCRIPT MODULES -->
+    <script src="js/config.js"></script>
+    <script src="js/telegram.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/config-ui.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/subject-select.js"></script>
+    <script src="js/dashboard.js"></script>
+    <script src="js/turbo-mode.js"></script>
+    <script src="js/normal-mode.js"></script>
+    <script src="js/result.js"></script>
+    <script src="js/settings.js"></script>
+    <script src="js/export.js"></script>
+    <script src="js/app.js"></script>
+
+    <script>
+        // Initialize Lucide Icons after DOM loaded
+        document.addEventListener("DOMContentLoaded", () => {
+            if (window.lucide) window.lucide.createIcons();
+        });
+    </script>
+</body>
+
+</html>
