@@ -136,8 +136,8 @@ function renderDashboardOverview() {
             
             <!-- FLOATING BADGE FOR ACTIVE SUBJECT COUNT -->
             <div id="floating-subject-count-fab" class="floating-fab" title="ជ្រើសរើសមុខវិជ្ជា">
-                <i data-lucide="book-open"></i>
-                <div class="fab-badge khmer-text">${window.toKhmerNum ? window.toKhmerNum(activeIds.length) : activeIds.length}</div>
+                <i data-lucide="book-open" style="width: 18px; height: 18px;"></i>
+                <span>${activeIds.length}</span>
             </div>
         </main>
     `;

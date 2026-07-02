@@ -263,7 +263,7 @@ body.dark-theme .toast-content {
     border: 1px solid rgba(0, 0, 0, 0.05);
 }
 
-/* Floating FAB for Dashboard */
+/* Floating FAB (Pill shaped containing book icon and active count) */
 .floating-fab {
     position: fixed;
     right: 20px;
@@ -271,33 +271,28 @@ body.dark-theme .toast-content {
     z-index: 99;
     background: linear-gradient(135deg, var(--primary-color) 0%, #1d4ed8 100%);
     color: white;
-    border-radius: 50%;
-    width: 56px;
-    height: 56px;
+    border-radius: 30px;
+    padding: 10px 18px;
+    min-height: 44px;
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: 0 8px 24px rgba(37, 99, 235, 0.4);
+    gap: 6px;
+    box-shadow: 0 8px 24px rgba(37, 99, 235, 0.35);
     cursor: pointer;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.2s ease;
+    border: 1px solid rgba(255, 255, 255, 0.15);
 }
 
 .floating-fab:active {
-    transform: scale(0.92);
+    transform: scale(0.94);
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
 }
 
-.floating-fab .fab-badge {
-    position: absolute;
-    top: -4px;
-    right: -4px;
-    background: var(--danger-color);
-    color: white;
-    border-radius: 50%;
-    padding: 2px 6px;
-    font-size: 11px;
+.floating-fab span {
+    font-size: 15px;
     font-weight: 700;
-    border: 2px solid var(--card-bg);
-    min-height: unset;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    line-height: 1;
 }
+
 
