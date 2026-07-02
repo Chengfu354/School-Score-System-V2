@@ -24,10 +24,10 @@ function renderNormalModePage() {
     const activeIds = JSON.parse(localStorage.getItem(STORAGE.ACTIVE_SUBJECTS) || "[]");
     const allSubjects = JSON.parse(localStorage.getItem(STORAGE.SUBJECTS) || "[]");
 
-    let theadHtml = `<tr>
-        <th style="min-width: 40px; position: sticky; left: 0; background: var(--card-bg); z-index: 4; top: 0;">ល.រ</th>
-        <th style="min-width: 130px; position: sticky; left: 40px; background: var(--card-bg); z-index: 4; top: 0;">ឈ្មោះ</th>
-        <th style="min-width: 55px; position: sticky; top: 0; background: var(--card-bg); z-index: 2; text-align: center;">ភេទ</th>
+    let theadHtml = `<tr style="height: 58px;">
+        <th style="min-width: 45px; position: sticky; left: 0; background: var(--card-bg); z-index: 4; top: 0; text-align: left; font-size: 13.5px; padding: 10px 8px;">ល.រ</th>
+        <th style="min-width: 130px; position: sticky; left: 45px; background: var(--card-bg); z-index: 4; top: 0; text-align: left; font-size: 13.5px; padding: 10px 8px;">ឈ្មោះ</th>
+        <th style="min-width: 55px; position: sticky; top: 0; background: var(--card-bg); z-index: 2; text-align: left; font-size: 13.5px; padding: 10px 8px;">ភេទ</th>
     `;
     activeIds.forEach(id => {
         let sub = allSubjects.find(s => String(s.id) === String(id));
@@ -37,16 +37,16 @@ function renderNormalModePage() {
             else sub = { id: id, name: String(id) };
         }
         if (sub) {
-            theadHtml += `<th style="min-width: 75px; position: sticky; top: 0; background: var(--card-bg); z-index: 2; text-align: center;">${escapeHtml(sub.name)}</th>`;
+            theadHtml += `<th style="min-width: 75px; position: sticky; top: 0; background: var(--card-bg); z-index: 2; text-align: left; font-size: 13.5px; padding: 10px 8px;">${escapeHtml(sub.name)}</th>`;
         }
     });
     theadHtml += `
-        <th style="min-width: 80px; position: sticky; top: 0; background: var(--card-bg); z-index: 2; text-align: center; color: var(--primary-color);">ពិន្ទុសរុប</th>
-        <th style="min-width: 75px; position: sticky; top: 0; background: var(--card-bg); z-index: 2; text-align: center; color: var(--primary-color);">មធ្យមភាគ</th>
-        <th id="th-sort-rank" style="min-width: 110px; position: sticky; top: 0; background: var(--card-bg); z-index: 4; text-align: center; cursor: pointer; user-select: none; color: var(--primary-color); white-space: nowrap;">
-            ចំណាត់ថ្នាក់ ${normalSortByRank ? "▲" : "⬍"}
+        <th style="min-width: 85px; position: sticky; top: 0; background: var(--card-bg); z-index: 2; text-align: left; color: var(--primary-color); font-size: 13.5px; padding: 10px 8px;">ពិន្ទុសរុប</th>
+        <th style="min-width: 85px; position: sticky; top: 0; background: var(--card-bg); z-index: 2; text-align: left; color: var(--primary-color); font-size: 13.5px; padding: 10px 8px;">មធ្យមភាគ</th>
+        <th id="th-sort-rank" style="min-width: 70px; position: sticky; top: 0; background: var(--card-bg); z-index: 4; text-align: left; cursor: pointer; user-select: none; color: var(--primary-color); font-size: 13.5px; padding: 10px 8px; line-height: 1.2;">
+            ចំណាត់ថ្នាក់<br><span style="font-size: 10px; opacity: 0.8;">${normalSortByRank ? "▲" : "⬍"}</span>
         </th>
-        <th style="min-width: 70px; position: sticky; top: 0; background: var(--card-bg); z-index: 2; text-align: center;">និទ្ទេស</th>
+        <th style="min-width: 70px; position: sticky; top: 0; background: var(--card-bg); z-index: 2; text-align: left; font-size: 13.5px; padding: 10px 8px;">និទ្ទេស</th>
     </tr>`;
 
     // Sort students by rank if active
@@ -88,9 +88,9 @@ function renderNormalModePage() {
         const gradeClass = (s.grade === "F" || s.grade === "E" || s.grade === "ធ្លាក់") ? "grade-fail" : "grade-pass";
 
         tbodyHtml += `<tr>
-            <td style="position: sticky; left: 0; background: var(--card-bg); z-index: 2; text-align: center; font-weight: 600;">${seqNo}</td>
-            <td style="position: sticky; left: 40px; background: var(--card-bg); z-index: 2;" class="khmer-text">${escapeHtml(s.name)}</td>
-            <td class="text-center khmer-text" style="font-size: 13px;">${escapeHtml(s.gender || '-')}</td>
+            <td style="position: sticky; left: 0; background: var(--card-bg); z-index: 2; text-align: left; font-weight: 600; font-size: 13.5px; padding: 10px 8px;">${seqNo}</td>
+            <td style="position: sticky; left: 45px; background: var(--card-bg); z-index: 2; text-align: left; font-size: 13.5px; padding: 10px 8px;" class="khmer-text">${escapeHtml(s.name)}</td>
+            <td class="khmer-text" style="font-size: 13.5px; text-align: left; padding: 10px 8px;">${escapeHtml(s.gender || '-')}</td>
         `;
         activeIds.forEach((id, colIdx) => {
             const currentSubScore = (studentScores[id] !== undefined && studentScores[id] !== "" && studentScores[id] !== null)
@@ -98,7 +98,7 @@ function renderNormalModePage() {
                 : "";
 
             tbodyHtml += `
-                <td>
+                <td style="padding: 6px 4px;">
                     <input type="number" 
                            step="0.5" min="0" max="100" 
                            class="score-input normal-score-input" 
@@ -109,19 +109,19 @@ function renderNormalModePage() {
                            data-original="${currentSubScore}"
                            value="${currentSubScore}"
                            ${readonlyAttr}
-                           style="width: 100%; text-align: center; border: 1px solid transparent; background: transparent; font-weight: 600; ${!isNormalEditMode ? 'cursor: default;' : ''}">
+                           style="width: 100%; text-align: left; padding-left: 4px; border: 1px solid transparent; background: transparent; font-weight: 600; font-size: 13.5px; ${!isNormalEditMode ? 'cursor: default;' : ''}">
                 </td>
             `;
         });
 
-        // 4 Read-Only Result Columns (Ensure perfect center alignment for rank column)
+        // 4 Read-Only Result Columns (Ensure left-align matching request)
         tbodyHtml += `
-            <td class="text-center" id="total-${s.id}" style="background: var(--bg-color); font-weight: 700; color: var(--primary-color);"><b>${displayTotal}</b></td>
-            <td class="text-center" id="avg-${s.id}" style="background: var(--bg-color); font-weight: 600;">${displayAvg}</td>
-            <td class="text-center" id="rank-${s.id}" style="background: var(--bg-color); text-align: center; vertical-align: middle;">
-                <span class="${rankClass}" style="margin: 0 auto; display: inline-flex; align-items: center; justify-content: center;">${s.rank || '-'}</span>
+            <td id="total-${s.id}" style="background: var(--bg-color); font-weight: 700; color: var(--primary-color); text-align: left; font-size: 13.5px; padding: 10px 8px;"><b>${displayTotal}</b></td>
+            <td id="avg-${s.id}" style="background: var(--bg-color); font-weight: 600; text-align: left; font-size: 13.5px; padding: 10px 8px;">${displayAvg}</td>
+            <td id="rank-${s.id}" style="background: var(--bg-color); text-align: left; vertical-align: middle; padding: 10px 8px;">
+                <span class="${rankClass}" style="margin: 0; display: inline-flex; align-items: center; justify-content: center;">${s.rank || '-'}</span>
             </td>
-            <td class="text-center" id="grade-${s.id}" style="background: var(--bg-color);"><span class="badge ${gradeClass}">${s.grade || '-'}</span></td>
+            <td id="grade-${s.id}" style="background: var(--bg-color); text-align: left; padding: 10px 8px;"><span class="badge ${gradeClass}">${s.grade || '-'}</span></td>
         </tr>`;
     });
 
