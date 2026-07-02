@@ -162,14 +162,20 @@ async function sendTelegramLeaderboard(results) {
 
     let reportMsg = `📊 *របាយការណ៍ចំណាត់ថ្នាក់សិស្ស*\n👥 *ចំនួនសិស្សសរុប:* ${results.length} នាក់\n\n\`\`\`\n`;
 
-    // Process all students and output single-line style as requested: "01  មាន សុកហៀង  9.83  ល្អប្រសើរ"
+    // Dynamic padding calculation based on the longest name (min baseline: 24 characters)
+    const maxNameLen = Math.max(24, ...results.map(r => r.name ? r.name.length : 0));
+
+    // Process all students and output single-line style aligned vertically: "01  មាន សុកហៀង  9.83  ល្អប្រសើរ"
     results.forEach(res => {
         const displayRank = String(res.rank || '').padStart(2, '0');
         const avgVal = parseFloat(res.average);
         const displayAverage = !isNaN(avgVal) ? avgVal.toFixed(2) : (res.average || 0);
         const grade = res.grade || '-';
 
-        reportMsg += `${displayRank}  ${res.name}  ${displayAverage}  ${grade}\n`;
+        // Pad the name dynamically in monospace format to ensure columns align perfectly
+        const paddedName = res.name.padEnd(maxNameLen, ' ');
+
+        reportMsg += `${displayRank}  ${paddedName}  ${displayAverage}  ${grade}\n`;
     });
 
     reportMsg += `\`\`\``;
