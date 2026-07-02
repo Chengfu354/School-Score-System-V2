@@ -75,6 +75,14 @@ async function renderResultsPage() {
             const gradeClass = (res.grade === "F" || res.grade === "E" || res.grade === "ធ្លាក់") ? "grade-fail" : "grade-pass";
             const seqNo = idx + 1;
 
+            // Format Average to exactly 2 decimal places (e.g. 9.83)
+            const avgVal = parseFloat(res.average);
+            const displayAverage = !isNaN(avgVal) ? avgVal.toFixed(2) : (res.average || 0);
+
+            // Format Total beautifully
+            const totalVal = parseFloat(res.total);
+            const displayTotal = !isNaN(totalVal) ? (Number.isInteger(totalVal) ? totalVal : totalVal.toFixed(2)) : (res.total || 0);
+
             rowsHtml += `
                 <tr>
                     <td class="text-center text-normal" style="font-weight: 600; color: var(--subtext-color);">${seqNo}</td>
@@ -82,8 +90,8 @@ async function renderResultsPage() {
                         <div class="khmer-text text-normal text-bold">${escapeHtml(res.name)}</div>
                     </td>
                     <td class="text-center khmer-text text-normal">${escapeHtml(res.gender || '-')}</td>
-                    <td class="text-center text-normal"><b>${res.total || 0}</b></td>
-                    <td class="text-center text-normal">${res.average || 0}</td>
+                    <td class="text-center text-normal"><b>${displayTotal}</b></td>
+                    <td class="text-center text-normal">${displayAverage}</td>
                     <td class="text-center"><span class="${rankClass}">${res.rank || '-'}</span></td>
                     <td class="text-center"><span class="badge ${gradeClass}">${res.grade || '-'}</span></td>
                 </tr>
@@ -161,7 +169,14 @@ async function sendTelegramLeaderboard(results) {
         if (r === 1) medal = "🥇";
         else if (r === 2) medal = "🥈";
         else if (r === 3) medal = "🥉";
-        reportMsg += `${medal} *លេខ ${res.rank}* ${res.name} (ភេទ: ${res.gender}) - ពិន្ទុសរុប: *${res.total}* (មធ្យមភាគ: ${res.average}, និទ្ទេស: ${res.grade})\n`;
+
+        const avgVal = parseFloat(res.average);
+        const displayAverage = !isNaN(avgVal) ? avgVal.toFixed(2) : (res.average || 0);
+
+        const totalVal = parseFloat(res.total);
+        const displayTotal = !isNaN(totalVal) ? (Number.isInteger(totalVal) ? totalVal : totalVal.toFixed(2)) : (res.total || 0);
+
+        reportMsg += `${medal} *លេខ ${res.rank}* ${res.name} (ភេទ: ${res.gender}) - ពិន្ទុសរុប: *${displayTotal}* (មធ្យមភាគ: ${displayAverage}, និទ្ទេស: ${res.grade})\n`;
     });
 
     try {
