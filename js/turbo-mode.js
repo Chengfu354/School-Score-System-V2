@@ -147,7 +147,25 @@ function bindTurboEvents() {
         });
     }
 
+    const scrollContainer = document.querySelector("#turbo-mode-page .content");
     const floatingBtn = document.getElementById("floating-turbo-edit-btn");
+    if (scrollContainer && floatingBtn) {
+        let scrollTimeout;
+        scrollContainer.addEventListener("scroll", () => {
+            floatingBtn.style.transition = "opacity 0.3s ease, transform 0.3s ease";
+            floatingBtn.style.opacity = "0";
+            floatingBtn.style.pointerEvents = "none";
+            floatingBtn.style.transform = "scale(0.8)";
+            
+            clearTimeout(scrollTimeout);
+            scrollTimeout = setTimeout(() => {
+                floatingBtn.style.opacity = "1";
+                floatingBtn.style.pointerEvents = "auto";
+                floatingBtn.style.transform = "scale(1)";
+            }, 3000);
+        });
+    }
+
     if (floatingBtn) {
         floatingBtn.addEventListener("click", () => {
             isTurboEditMode = !isTurboEditMode;

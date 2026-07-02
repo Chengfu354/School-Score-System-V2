@@ -63,7 +63,7 @@ async function renderResultsPage() {
 
     let rowsHtml = "";
     if (studentResults.length === 0) {
-        rowsHtml = `<tr><td colspan="7" class="text-center text-muted khmer-text" style="padding:20px;">មិនទាន់មានទិន្នន័យសិស្សនៅឡើយទេ។</td></tr>`;
+        rowsHtml = `<tr><td colspan="5" class="text-center text-muted khmer-text" style="padding:20px;">មិនទាន់មានទិន្នន័យសិស្សនៅឡើយទេ។</td></tr>`;
     } else {
         studentResults.forEach((res, idx) => {
             const r = parseInt(res.rank) || 0;
@@ -79,21 +79,16 @@ async function renderResultsPage() {
             const avgVal = parseFloat(res.average);
             const displayAverage = !isNaN(avgVal) ? avgVal.toFixed(2) : (res.average || 0);
 
-            // Format Total beautifully
-            const totalVal = parseFloat(res.total);
-            const displayTotal = !isNaN(totalVal) ? (Number.isInteger(totalVal) ? totalVal : totalVal.toFixed(2)) : (res.total || 0);
-
+            // Row text styled small and single-line layout (Hiding gender and total score)
             rowsHtml += `
-                <tr>
-                    <td class="text-center text-normal" style="font-weight: 600; color: var(--subtext-color);">${seqNo}</td>
-                    <td>
-                        <div class="khmer-text text-normal text-bold">${escapeHtml(res.name)}</div>
+                <tr style="font-size: 13px;">
+                    <td style="text-align: center; font-weight: 600; color: var(--subtext-color); white-space: nowrap; padding: 6px 4px;">${seqNo}</td>
+                    <td style="white-space: nowrap; padding: 6px 8px;">
+                        <div class="khmer-text text-bold" style="font-size: 13px; white-space: nowrap;">${escapeHtml(res.name)}</div>
                     </td>
-                    <td class="text-center khmer-text text-normal">${escapeHtml(res.gender || '-')}</td>
-                    <td class="text-center text-normal"><b>${displayTotal}</b></td>
-                    <td class="text-center text-normal">${displayAverage}</td>
-                    <td class="text-center"><span class="${rankClass}">${res.rank || '-'}</span></td>
-                    <td class="text-center"><span class="badge ${gradeClass}">${res.grade || '-'}</span></td>
+                    <td style="text-align: center; white-space: nowrap; padding: 6px 4px; font-weight: 600;">${displayAverage}</td>
+                    <td style="text-align: center; white-space: nowrap; padding: 6px 4px;"><span class="${rankClass}">${res.rank || '-'}</span></td>
+                    <td style="text-align: center; white-space: nowrap; padding: 6px 4px;"><span class="badge ${gradeClass}" style="font-size: 11px; padding: 2px 8px;">${res.grade || '-'}</span></td>
                 </tr>
             `;
         });
@@ -112,13 +107,11 @@ async function renderResultsPage() {
                     <table class="result-table">
                         <thead>
                             <tr>
-                                <th class="text-center text-sm">ល.រ</th>
-                                <th class="text-sm">គោត្តនាម នាម</th>
-                                <th class="text-center text-sm">ភេទ</th>
-                                <th class="text-center text-sm">ពិន្ទុសរុប</th>
-                                <th class="text-center text-sm">មធ្យមភាគ</th>
-                                <th class="text-center text-sm">ចំណាត់ថ្នាក់</th>
-                                <th class="text-center text-sm">និទ្ទេស</th>
+                                <th style="text-align: center; font-size: 12px; width: 50px;">ល.រ</th>
+                                <th style="font-size: 12px;">គោត្តនាម នាម</th>
+                                <th style="text-align: center; font-size: 12px; width: 90px;">មធ្យមភាគ</th>
+                                <th style="text-align: center; font-size: 12px; width: 90px;">ចំណាត់ថ្នាក់</th>
+                                <th style="text-align: center; font-size: 12px; width: 90px;">និទ្ទេស</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -161,23 +154,19 @@ async function sendTelegramLeaderboard(results) {
         localStorage.setItem(STORAGE.TG_CHAT_ID, chatId.trim());
     }
 
-    let reportMsg = `📊 *របាយការណ៍ចំណាត់ថ្នាក់សិស្ស*\n👥 *ចំនួនសិស្សសរុប:* ${results.length} នាក់\n\n🏆 *សិស្សដែលមានចំណាត់ថ្នាក់ល្អសមរម្យ:*\n`;
+    let reportMsg = `📊 *របាយការណ៍ចំណាត់ថ្នាក់សិស្ស*\n👥 *ចំនួនសិស្សសរុប:* ${results.length} នាក់\n\n\`\`\`\n`;
 
-    results.slice(0, 10).forEach(res => {
-        const r = parseInt(res.rank) || 0;
-        let medal = "▫️";
-        if (r === 1) medal = "🥇";
-        else if (r === 2) medal = "🥈";
-        else if (r === 3) medal = "🥉";
-
+    // Process all students and output single-line style as requested: "01  មាន សុកហៀង  9.83  ល្អប្រសើរ"
+    results.forEach(res => {
+        const displayRank = String(res.rank || '').padStart(2, '0');
         const avgVal = parseFloat(res.average);
         const displayAverage = !isNaN(avgVal) ? avgVal.toFixed(2) : (res.average || 0);
+        const grade = res.grade || '-';
 
-        const totalVal = parseFloat(res.total);
-        const displayTotal = !isNaN(totalVal) ? (Number.isInteger(totalVal) ? totalVal : totalVal.toFixed(2)) : (res.total || 0);
-
-        reportMsg += `${medal} *លេខ ${res.rank}* ${res.name} (ភេទ: ${res.gender}) - ពិន្ទុសរុប: *${displayTotal}* (មធ្យមភាគ: ${displayAverage}, និទ្ទេស: ${res.grade})\n`;
+        reportMsg += `${displayRank}  ${res.name}  ${displayAverage}  ${grade}\n`;
     });
+
+    reportMsg += `\`\`\``;
 
     try {
         const text = encodeURIComponent(reportMsg);
@@ -196,4 +185,9 @@ async function sendTelegramLeaderboard(results) {
         alert("⚠️ មានបញ្ហាបណ្តាញ អំឡុងពេលផ្ញើរបាយការណ៍។");
         triggerHaptic("error");
     }
+}
+
+function escapeHtml(text) {
+    if (!text) return "";
+    return String(text).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 }

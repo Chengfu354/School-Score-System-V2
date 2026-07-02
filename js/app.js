@@ -133,6 +133,9 @@ function navigateToPage(pageId) {
         } else if (pageId === "settings-page" && window.renderSettingsPage) {
             window.renderSettingsPage();
             setActiveNavButton("nav-settings");
+        } else if (pageId === "system-config-page" && window.renderSystemConfigPage) {
+            window.renderSystemConfigPage();
+            setActiveNavButton("nav-settings");
         } else if (pageId === "export-page" && window.renderExportPage) {
             window.renderExportPage();
             setActiveNavButton("nav-export");

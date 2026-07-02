@@ -14,6 +14,11 @@ function renderNormalModePage() {
     const container = document.getElementById("normal-mode-page");
     if (!container) return;
 
+    // Save scroll position before rendering to prevent jumping back to left (gender column)
+    const scrollContainer = document.getElementById("spreadsheet-container");
+    const savedScrollLeft = scrollContainer ? scrollContainer.scrollLeft : 0;
+    const savedScrollTop = scrollContainer ? scrollContainer.scrollTop : 0;
+
     const students = JSON.parse(localStorage.getItem(STORAGE.STUDENTS) || "[]");
     const scores = JSON.parse(localStorage.getItem(STORAGE.SCORES) || "{}");
     const activeIds = JSON.parse(localStorage.getItem(STORAGE.ACTIVE_SUBJECTS) || "[]");
@@ -38,7 +43,7 @@ function renderNormalModePage() {
     theadHtml += `
         <th style="min-width: 80px; position: sticky; top: 0; background: var(--card-bg); z-index: 2; text-align: center; color: var(--primary-color);">ពិន្ទុសរុប</th>
         <th style="min-width: 75px; position: sticky; top: 0; background: var(--card-bg); z-index: 2; text-align: center; color: var(--primary-color);">មធ្យមភាគ</th>
-        <th id="th-sort-rank" style="min-width: 85px; position: sticky; top: 0; background: var(--card-bg); z-index: 4; text-align: center; cursor: pointer; user-select: none; color: var(--primary-color);">
+        <th id="th-sort-rank" style="min-width: 110px; position: sticky; top: 0; background: var(--card-bg); z-index: 4; text-align: center; cursor: pointer; user-select: none; color: var(--primary-color); white-space: nowrap;">
             ចំណាត់ថ្នាក់ ${normalSortByRank ? "▲" : "⬍"}
         </th>
         <th style="min-width: 70px; position: sticky; top: 0; background: var(--card-bg); z-index: 2; text-align: center;">និទ្ទេស</th>
@@ -109,11 +114,13 @@ function renderNormalModePage() {
             `;
         });
 
-        // 4 Read-Only Result Columns
+        // 4 Read-Only Result Columns (Ensure perfect center alignment for rank column)
         tbodyHtml += `
             <td class="text-center" id="total-${s.id}" style="background: var(--bg-color); font-weight: 700; color: var(--primary-color);"><b>${displayTotal}</b></td>
             <td class="text-center" id="avg-${s.id}" style="background: var(--bg-color); font-weight: 600;">${displayAvg}</td>
-            <td class="text-center" id="rank-${s.id}" style="background: var(--bg-color);"><span class="${rankClass}">${s.rank || '-'}</span></td>
+            <td class="text-center" id="rank-${s.id}" style="background: var(--bg-color); text-align: center; vertical-align: middle;">
+                <span class="${rankClass}" style="margin: 0 auto; display: inline-flex; align-items: center; justify-content: center;">${s.rank || '-'}</span>
+            </td>
             <td class="text-center" id="grade-${s.id}" style="background: var(--bg-color);"><span class="badge ${gradeClass}">${s.grade || '-'}</span></td>
         </tr>`;
     });
@@ -150,6 +157,13 @@ function renderNormalModePage() {
     `;
 
     bindNormalModeEvents();
+
+    // Restore scroll position after innerHTML update to prevent jumping back to left (gender column)
+    const newScrollContainer = document.getElementById("spreadsheet-container");
+    if (newScrollContainer) {
+        newScrollContainer.scrollLeft = savedScrollLeft;
+        newScrollContainer.scrollTop = savedScrollTop;
+    }
 }
 
 function bindNormalModeEvents() {
@@ -171,7 +185,26 @@ function bindNormalModeEvents() {
         });
     }
 
+    // Scroll listener to hide Edit floating button during scrolling and show it after 3s
+    const scrollContainer = document.getElementById("spreadsheet-container");
     const floatingBtn = document.getElementById("floating-normal-edit-btn");
+    if (scrollContainer && floatingBtn) {
+        let scrollTimeout;
+        scrollContainer.addEventListener("scroll", () => {
+            floatingBtn.style.transition = "opacity 0.3s ease, transform 0.3s ease";
+            floatingBtn.style.opacity = "0";
+            floatingBtn.style.pointerEvents = "none";
+            floatingBtn.style.transform = "scale(0.8)";
+            
+            clearTimeout(scrollTimeout);
+            scrollTimeout = setTimeout(() => {
+                floatingBtn.style.opacity = "1";
+                floatingBtn.style.pointerEvents = "auto";
+                floatingBtn.style.transform = "scale(1)";
+            }, 3000);
+        });
+    }
+
     if (floatingBtn) {
         floatingBtn.addEventListener("click", () => {
             isNormalEditMode = !isNormalEditMode;

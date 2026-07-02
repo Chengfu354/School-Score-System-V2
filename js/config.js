@@ -40,13 +40,12 @@ const ConfigManager = {
         } catch (e) {
             console.error("Failed to load config", e);
         }
-        // Auto-seed default configuration so the user does not have to click accept or configure
+        // Auto-seed empty configuration template
         const defaultConfig = {
-            apiUrl: "https://script.google.com/macros/s/AKfycbzF7iH5561_8Ht2IxVtfcKGZ3vJPj0MuRhz4HXfqHI8Hn3nFp17xFvhWvUzzbpUYeXE/exec",
-            spreadsheetId: "1mJKR6w3z9LFTUIsWMi4CnH25Y_9CsAdUyubdiK4mwVw",
+            apiUrl: "",
+            spreadsheetId: "",
             pin: "1234"
         };
-        localStorage.setItem(STORAGE.CONFIG, JSON.stringify(defaultConfig));
         SESSION.config = defaultConfig;
         return defaultConfig;
     },
