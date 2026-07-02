@@ -25,8 +25,8 @@ function renderNormalModePage() {
     const allSubjects = JSON.parse(localStorage.getItem(STORAGE.SUBJECTS) || "[]");
 
     let theadHtml = `<tr style="height: 58px;">
-        <th style="min-width: 45px; position: sticky; left: 0; background: var(--card-bg); z-index: 4; top: 0; text-align: left; font-size: 13.5px; padding: 10px 8px; white-space: nowrap;">ល.រ</th>
-        <th style="min-width: 130px; position: sticky; left: 45px; background: var(--card-bg); z-index: 4; top: 0; text-align: left; font-size: 13.5px; padding: 10px 8px; white-space: nowrap;">ឈ្មោះ</th>
+        <th style="min-width: 38px; max-width: 38px; width: 38px; position: sticky; left: 0; background: var(--card-bg); z-index: 4; top: 0; text-align: left; font-size: 13.5px; padding: 10px 6px; white-space: nowrap;">ល.រ</th>
+        <th style="position: sticky; left: 38px; background: var(--card-bg); z-index: 4; top: 0; text-align: left; font-size: 13.5px; padding: 10px 8px; white-space: nowrap;">ឈ្មោះ</th>
         <th style="min-width: 50px; position: sticky; top: 0; background: var(--card-bg); z-index: 2; text-align: center; font-size: 13.5px; padding: 10px 8px; white-space: nowrap;">ភេទ</th>
     `;
     activeIds.forEach(id => {
@@ -88,8 +88,8 @@ function renderNormalModePage() {
         const gradeClass = (s.grade === "F" || s.grade === "E" || s.grade === "ធ្លាក់") ? "grade-fail" : "grade-pass";
 
         tbodyHtml += `<tr>
-            <td style="position: sticky; left: 0; background: var(--card-bg); z-index: 2; text-align: left; font-weight: 600; font-size: 13.5px; padding: 10px 8px; white-space: nowrap;">${seqNo}</td>
-            <td style="position: sticky; left: 45px; background: var(--card-bg); z-index: 2; text-align: left; font-size: 13.5px; padding: 10px 8px; white-space: nowrap;" class="khmer-text">${escapeHtml(s.name)}</td>
+            <td style="position: sticky; left: 0; min-width: 38px; max-width: 38px; width: 38px; background: var(--card-bg); z-index: 2; text-align: left; font-weight: 600; font-size: 13.5px; padding: 10px 6px; white-space: nowrap;">${seqNo}</td>
+            <td style="position: sticky; left: 38px; background: var(--card-bg); z-index: 2; text-align: left; font-size: 13.5px; padding: 10px 8px; white-space: nowrap;" class="khmer-text">${escapeHtml(s.name)}</td>
             <td class="khmer-text text-center" style="font-size: 13.5px; text-align: center; padding: 10px 8px; white-space: nowrap;">${escapeHtml(s.gender || '-')}</td>
         `;
         activeIds.forEach((id, colIdx) => {

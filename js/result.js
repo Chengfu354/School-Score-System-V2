@@ -79,16 +79,20 @@ async function renderResultsPage() {
             const avgVal = parseFloat(res.average);
             const displayAverage = !isNaN(avgVal) ? avgVal.toFixed(2) : (res.average || 0);
 
-            // Row text styled small and single-line layout (Hiding gender and total score)
+            // Row text styled small and single-line layout (Hiding gender and total score, minimal paddings)
             rowsHtml += `
-                <tr style="font-size: 13px;">
-                    <td style="text-align: center; font-weight: 600; color: var(--subtext-color); white-space: nowrap; padding: 6px 4px;">${seqNo}</td>
-                    <td style="white-space: nowrap; padding: 6px 8px;">
-                        <div class="khmer-text text-bold" style="font-size: 13px; white-space: nowrap;">${escapeHtml(res.name)}</div>
+                <tr style="font-size: 12.5px;">
+                    <td style="text-align: center; font-weight: 600; color: var(--subtext-color); white-space: nowrap; padding: 8px 4px;">${seqNo}</td>
+                    <td style="white-space: nowrap; padding: 8px 6px;">
+                        <div class="khmer-text text-bold" style="font-size: 12.5px; white-space: nowrap;">${escapeHtml(res.name)}</div>
                     </td>
-                    <td style="text-align: center; white-space: nowrap; padding: 6px 4px; font-weight: 600;">${displayAverage}</td>
-                    <td style="text-align: center; white-space: nowrap; padding: 6px 4px;"><span class="${rankClass}">${res.rank || '-'}</span></td>
-                    <td style="text-align: center; white-space: nowrap; padding: 6px 4px;"><span class="badge ${gradeClass}" style="font-size: 11px; padding: 2px 8px;">${res.grade || '-'}</span></td>
+                    <td style="text-align: center; white-space: nowrap; padding: 8px 4px; font-weight: 600;">${displayAverage}</td>
+                    <td style="text-align: center; white-space: nowrap; padding: 8px 4px;">
+                        <span class="${rankClass}" style="margin: 0 auto; display: inline-flex; align-items: center; justify-content: center; width: 24px; height: 24px; font-size: 12px; font-weight: 800;">${res.rank || '-'}</span>
+                    </td>
+                    <td style="text-align: center; white-space: nowrap; padding: 8px 4px;">
+                        <span class="badge ${gradeClass}" style="font-size: 10px; padding: 2px 6px; font-weight: 600;">${res.grade || '-'}</span>
+                    </td>
                 </tr>
             `;
         });
@@ -99,19 +103,19 @@ async function renderResultsPage() {
             <div class="topbar-title text-title">📊 របាយការណ៍លទ្ធផល និងចំណាត់ថ្នាក់</div>
         </header>
 
-        <main class="content">
-            <div class="card">
-                <h3 class="khmer-text text-title" style="font-size: 16px; margin-bottom: 6px;">🏆 តារាងចំណាត់ថ្នាក់សិស្សប្រចាំខែ</h3>
-                <p class="khmer-text text-subtitle" style="margin-bottom: 12px;">* ទិន្នន័យ និងចំណាត់ថ្នាក់ត្រូវបានគណនាដោយផ្ទាល់ពី Google Sheets</p>
-                <div class="result-table-container">
-                    <table class="result-table">
+        <main class="content" style="padding: 10px; padding-bottom: 90px;">
+            <div class="card" style="padding: 10px; margin-bottom: 12px;">
+                <h3 class="khmer-text text-title" style="font-size: 15px; margin-bottom: 4px;">🏆 តារាងចំណាត់ថ្នាក់សិស្សប្រចាំខែ</h3>
+                <p class="khmer-text text-subtitle" style="margin-bottom: 12px; font-size: 11px;">* ទិន្នន័យ និងចំណាត់ថ្នាក់ត្រូវបានគណនាដោយផ្ទាល់ពី Google Sheets</p>
+                <div class="result-table-container" style="margin-top: 5px;">
+                    <table class="result-table" style="font-size: 12.5px;">
                         <thead>
                             <tr>
-                                <th style="text-align: center; font-size: 12px; width: 50px;">ល.រ</th>
-                                <th style="font-size: 12px;">គោត្តនាម នាម</th>
-                                <th style="text-align: center; font-size: 12px; width: 90px;">មធ្យមភាគ</th>
-                                <th style="text-align: center; font-size: 12px; width: 90px;">ចំណាត់ថ្នាក់</th>
-                                <th style="text-align: center; font-size: 12px; width: 90px;">និទ្ទេស</th>
+                                <th style="text-align: center; font-size: 11.5px; width: 35px; padding: 8px 4px; white-space: nowrap;">ល.រ</th>
+                                <th style="font-size: 11.5px; padding: 8px 6px; white-space: nowrap;">គោត្តនាម នាម</th>
+                                <th style="text-align: center; font-size: 11.5px; width: 65px; padding: 8px 4px; white-space: nowrap;">មធ្យមភាគ</th>
+                                <th style="text-align: center; font-size: 11.5px; width: 65px; padding: 8px 4px; white-space: nowrap;">ចំណាត់</th>
+                                <th style="text-align: center; font-size: 11.5px; width: 65px; padding: 8px 4px; white-space: nowrap;">និទ្ទេស</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -121,7 +125,7 @@ async function renderResultsPage() {
                 </div>
             </div>
 
-            <button id="send-tg-report-btn" class="btn btn-primary full-width khmer-text text-normal" style="margin-top: 10px;">
+            <button id="send-tg-report-btn" class="btn btn-primary full-width khmer-text text-normal" style="margin-top: 5px;">
                 ✈️ ផ្ញើរបាយការណ៍ចំណាត់ថ្នាក់ទៅ Telegram
             </button>
         </main>
