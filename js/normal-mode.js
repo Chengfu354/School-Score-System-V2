@@ -8,6 +8,7 @@
 window.renderNormalModePage = renderNormalModePage;
 
 let isNormalEditMode = false;
+let normalSortByRank = false;
 
 function renderNormalModePage() {
     const container = document.getElementById("normal-mode-page");
@@ -37,13 +38,26 @@ function renderNormalModePage() {
     theadHtml += `
         <th style="min-width: 80px; position: sticky; top: 0; background: var(--card-bg); z-index: 2; text-align: center; color: var(--primary-color);">ពិន្ទុសរុប</th>
         <th style="min-width: 75px; position: sticky; top: 0; background: var(--card-bg); z-index: 2; text-align: center; color: var(--primary-color);">មធ្យមភាគ</th>
-        <th style="min-width: 75px; position: sticky; top: 0; background: var(--card-bg); z-index: 2; text-align: center;">ចំណាត់ថ្នាក់</th>
+        <th id="th-sort-rank" style="min-width: 85px; position: sticky; top: 0; background: var(--card-bg); z-index: 4; text-align: center; cursor: pointer; user-select: none; color: var(--primary-color);">
+            ចំណាត់ថ្នាក់ ${normalSortByRank ? "▲" : "⬍"}
+        </th>
         <th style="min-width: 70px; position: sticky; top: 0; background: var(--card-bg); z-index: 2; text-align: center;">និទ្ទេស</th>
     </tr>`;
 
+    // Sort students by rank if active
+    let displayStudents = [...students];
+    if (normalSortByRank) {
+        displayStudents.sort((a, b) => {
+            const rA = parseInt(a.rank) || 9999;
+            const rB = parseInt(b.rank) || 9999;
+            return rA - rB;
+        });
+    }
+
     let tbodyHtml = "";
-    students.forEach((s, rowIdx) => {
-        const seqNo = s.no ? s.no : (rowIdx + 1);
+    displayStudents.forEach((s, rowIdx) => {
+        // Serial numbers remain sequential (1 to 36) in visual order, as requested
+        const seqNo = rowIdx + 1;
         const readonlyAttr = isNormalEditMode ? "" : "readonly";
         const studentScores = scores[s.id] || {};
 
@@ -143,7 +157,17 @@ function bindNormalModeEvents() {
     if (exitBtn) {
         exitBtn.addEventListener("click", () => {
             isNormalEditMode = false;
+            normalSortByRank = false;
             if (window.navigateToPage) window.navigateToPage("dashboard-page");
+        });
+    }
+
+    const sortRankHeader = document.getElementById("th-sort-rank");
+    if (sortRankHeader) {
+        sortRankHeader.addEventListener("click", () => {
+            normalSortByRank = !normalSortByRank;
+            if (window.triggerHaptic) window.triggerHaptic("medium");
+            renderNormalModePage();
         });
     }
 

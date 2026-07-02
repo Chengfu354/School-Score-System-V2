@@ -56,9 +56,22 @@ const API = {
         const data = await this.request("getSubjects", "GET", null, silentError);
         if (Array.isArray(data) && data.length > 0) {
             localStorage.setItem(STORAGE.SUBJECTS, JSON.stringify(data));
-            const activeIds = data.filter(s => s && s.active !== false).map(s => s.id);
-            if (activeIds.length > 0) {
-                localStorage.setItem(STORAGE.ACTIVE_SUBJECTS, JSON.stringify(activeIds));
+            
+            // Get local active IDs before sync to preserve fallback/offline subjects (e.g., 24, 25)
+            const localActiveIds = JSON.parse(localStorage.getItem(STORAGE.ACTIVE_SUBJECTS) || "[]");
+            const serverActiveIds = data.filter(s => s && s.active !== false).map(s => s.id);
+            const serverSubjectIds = data.map(s => s.id);
+            
+            const preservedActiveIds = localActiveIds.filter(id => {
+                // If it is a local fallback/offline subject (not in server database), preserve its state
+                if (!serverSubjectIds.some(sid => String(sid) === String(id))) return true;
+                // Otherwise, follow the server active state
+                return serverActiveIds.some(sid => String(sid) === String(id));
+            });
+
+            const finalActiveIds = Array.from(new Set([...serverActiveIds, ...preservedActiveIds]));
+            if (finalActiveIds.length > 0) {
+                localStorage.setItem(STORAGE.ACTIVE_SUBJECTS, JSON.stringify(finalActiveIds));
             }
         }
         return data;
