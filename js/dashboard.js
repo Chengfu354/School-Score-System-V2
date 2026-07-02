@@ -111,7 +111,7 @@ function renderDashboardOverview() {
             <div class="topbar-title text-title">🏫 ផ្ទាំងគ្រប់គ្រងប្រព័ន្ធពិន្ទុ</div>
         </header>
 
-        <main class="content">
+        <main class="content" style="position: relative;">
             <div class="card" style="margin-bottom: 20px;">
                 <h3 class="khmer-text text-title" style="font-size: 16px;">⚡ របៀបបញ្ចូល និងកែសម្រួលពិន្ទុ</h3>
                 <div class="btn-grid" style="margin-top: 12px;">
@@ -133,10 +133,17 @@ function renderDashboardOverview() {
                     មើលចំណាត់ថ្នាក់ និងនិទ្ទេស
                 </button>
             </div>
+            
+            <!-- FLOATING BADGE FOR ACTIVE SUBJECT COUNT -->
+            <div id="floating-subject-count-fab" class="floating-fab" title="ជ្រើសរើសមុខវិជ្ជា">
+                <i data-lucide="book-open"></i>
+                <div class="fab-badge khmer-text">${window.toKhmerNum ? window.toKhmerNum(activeIds.length) : activeIds.length}</div>
+            </div>
         </main>
     `;
 
     bindDashboardEvents();
+    if (window.lucide) window.lucide.createIcons();
     if (window.updateTelegramUserInfo) window.updateTelegramUserInfo();
 }
 
@@ -156,6 +163,15 @@ function bindDashboardEvents() {
             });
         }
     });
+
+    // Handle floating FAB click to navigate to the export page
+    const fabBtn = document.getElementById("floating-subject-count-fab");
+    if (fabBtn) {
+        fabBtn.addEventListener("click", () => {
+            if (window.triggerHaptic) window.triggerHaptic("medium");
+            if (window.navigateToPage) window.navigateToPage("export-page");
+        });
+    }
 
     document.querySelectorAll("#dashboard-page .stat-card").forEach(card => {
         card.addEventListener("click", () => {

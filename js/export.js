@@ -193,7 +193,13 @@ function bindExportPageEvents() {
             saveBtn.innerHTML = originalText;
             saveBtn.disabled = false;
             if (window.triggerHaptic) window.triggerHaptic("success");
-            alert("✅ រក្សាទុកមុខវិជ្ជាសកម្មដោយជោគជ័យ!");
+            
+            const countStr = window.toKhmerNum ? window.toKhmerNum(activeIds.length) : activeIds.length;
+            if (window.showToast) {
+                window.showToast(`✅ បានរក្សាទុកចំនួន ${countStr} មុខវិជ្ជា!`, 1000);
+            } else {
+                alert(`✅ រក្សាទុកបាន ${countStr} មុខវិជ្ជា!`);
+            }
         });
     }
 }

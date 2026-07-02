@@ -178,3 +178,33 @@ function bindBottomNavigation() {
         }
     });
 }
+
+// Global helper: Khmer Number Converter
+const khmerDigits = ["០", "១", "២", "៣", "៤", "៥", "៦", "៧", "៨", "៩"];
+function toKhmerNum(num) {
+    return String(num).split("").map(d => khmerDigits[d] || d).join("");
+}
+window.toKhmerNum = toKhmerNum;
+
+// Global helper: Show Toast Message (autohide without OK button)
+function showToast(message, duration = 1000) {
+    let container = document.getElementById("global-toast-container");
+    if (!container) {
+        container = document.createElement("div");
+        container.id = "global-toast-container";
+        container.className = "toast-container";
+        document.body.appendChild(container);
+    }
+    
+    container.innerHTML = `<div class="toast-content">${message}</div>`;
+    
+    // Force reflow
+    container.offsetHeight;
+    
+    container.classList.add("show");
+    
+    setTimeout(() => {
+        container.classList.remove("show");
+    }, duration);
+}
+window.showToast = showToast;
