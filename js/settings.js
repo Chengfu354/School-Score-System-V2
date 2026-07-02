@@ -277,7 +277,8 @@ function bindSystemConfigEvents() {
                 const data = await res.json();
 
                 if (data.ok) {
-                    alert("🟢 ជោគជ័យ! Telegram Bot បានផ្ញើសារសាកល្បងទៅកាន់ Telegram របស់អ្នករួចរាល់ហើយ។");
+                    if (window.showToast) window.showToast("🟢 ជោគជ័យ! Telegram Bot តភ្ជាប់បានជោគជ័យ។", 1500);
+                    else alert("🟢 ជោគជ័យ! Telegram Bot បានផ្ញើសារសាកល្បងទៅកាន់ Telegram របស់អ្នករួចរាល់ហើយ។");
                     if (window.triggerHaptic) window.triggerHaptic("success");
                 } else {
                     alert(`⚠️ បរាជ័យក្នុងការផ្ញើសារ៖ ${data.description}`);
@@ -344,7 +345,8 @@ function bindSystemConfigEvents() {
             saveBtn.disabled = false;
 
             triggerHaptic("success");
-            alert("✅ ការកំណត់ត្រូវបានរក្សាទុក និងទាញយកទិន្នន័យពី Google Sheet រួចរាល់!");
+            if (window.showToast) window.showToast("✅ ការកំណត់ត្រូវបានរក្សាទុក និងទាញយកទិន្នន័យរួចរាល់!", 1500);
+            else alert("✅ ការកំណត់ត្រូវបានរក្សាទុក និងទាញយកទិន្នន័យពី Google Sheet រួចរាល់!");
             if (window.navigateToPage) window.navigateToPage("settings-page");
         });
     }

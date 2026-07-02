@@ -255,5 +255,6 @@ async function syncScoresToGoogle() {
         badge.textContent = "Synced Live!";
     }
     triggerHaptic("success");
-    alert("✅ Successfully synced scores to Google Sheets!");
+    if (window.showToast) window.showToast("✅ បានសមកាលកម្មពិន្ទុទៅ Google Sheets ជោគជ័យ!", 1500);
+    else alert("✅ Successfully synced scores to Google Sheets!");
 }

@@ -49,6 +49,17 @@ function renderNormalModePage() {
         <th style="min-width: 70px; position: sticky; top: 0; background: var(--card-bg); z-index: 2; text-align: center; font-size: 13.5px; padding: 10px 8px; white-space: nowrap;">និទ្ទេស</th>
     </tr>`;
 
+    // Build rank color map by sorting absolute rank positions
+    const sortedByRankList = [...students].sort((a, b) => {
+        const rA = parseInt(a.rank) || 9999;
+        const rB = parseInt(b.rank) || 9999;
+        return rA - rB;
+    });
+    const rankColorMap = {};
+    sortedByRankList.forEach((st, idx) => {
+        rankColorMap[st.id] = idx + 1; // absolute position (1, 2, 3, 4, 5...)
+    });
+
     // Sort students by rank if active
     let displayStudents = [...students];
     if (normalSortByRank) {
@@ -79,11 +90,13 @@ function renderNormalModePage() {
         const displayTotal = activeCount > 0 ? activeTotal : (s.total || 0);
         const displayAvg = activeCount > 0 ? (activeTotal / activeCount).toFixed(2) : (s.average || 0);
 
-        const r = parseInt(s.rank) || 0;
+        const rankPos = rankColorMap[s.id] || 9999;
         let rankClass = "rank-badge";
-        if (r === 1) rankClass += " rank-1";
-        else if (r === 2) rankClass += " rank-2";
-        else if (r === 3) rankClass += " rank-3";
+        if (rankPos === 1) rankClass += " rank-1";
+        else if (rankPos === 2) rankClass += " rank-2";
+        else if (rankPos === 3) rankClass += " rank-3";
+        else if (rankPos === 4) rankClass += " rank-4";
+        else if (rankPos === 5) rankClass += " rank-5";
 
         const gradeClass = (s.grade === "F" || s.grade === "E" || s.grade === "ធ្លាក់") ? "grade-fail" : "grade-pass";
 

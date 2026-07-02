@@ -66,11 +66,13 @@ async function renderResultsPage() {
         rowsHtml = `<tr><td colspan="5" class="text-center text-muted khmer-text" style="padding:20px;">មិនទាន់មានទិន្នន័យសិស្សនៅឡើយទេ។</td></tr>`;
     } else {
         studentResults.forEach((res, idx) => {
-            const r = parseInt(res.rank) || 0;
+            const rankPos = idx + 1; // 1, 2, 3, 4, 5...
             let rankClass = "rank-badge";
-            if (r === 1) rankClass += " rank-1";
-            else if (r === 2) rankClass += " rank-2";
-            else if (r === 3) rankClass += " rank-3";
+            if (rankPos === 1) rankClass += " rank-1";
+            else if (rankPos === 2) rankClass += " rank-2";
+            else if (rankPos === 3) rankClass += " rank-3";
+            else if (rankPos === 4) rankClass += " rank-4";
+            else if (rankPos === 5) rankClass += " rank-5";
 
             const gradeClass = (res.grade === "F" || res.grade === "E" || res.grade === "ធ្លាក់") ? "grade-fail" : "grade-pass";
             const seqNo = idx + 1;
@@ -178,7 +180,8 @@ async function sendTelegramLeaderboard(results) {
         const data = await res.json();
 
         if (data.ok) {
-            alert("🟢 បានផ្ញើរបាយការណ៍ចំណាត់ថ្នាក់ទៅកាន់ Telegram ដោយជោគជ័យ!");
+            if (window.showToast) window.showToast("🟢 បានផ្ញើរបាយការណ៍ទៅ Telegram រួចរាល់!", 1500);
+            else alert("🟢 បានផ្ញើរបាយការណ៍ចំណាត់ថ្នាក់ទៅកាន់ Telegram ដោយជោគជ័យ!");
             triggerHaptic("success");
         } else {
             alert(`⚠️ Telegram API Error: ${data.description}`);
